@@ -1,0 +1,2 @@
+# Netlify / Cloudflare Pages: cada /voucher/<token> abre el mismo index.html (la app lee el token de la URL)
+/voucher/*  /index.html  200
