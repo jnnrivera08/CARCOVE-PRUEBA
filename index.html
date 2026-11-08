@@ -747,13 +747,15 @@ async function renderPubBox(n){
  else{const last=rows[0];const why=last&&last.estado==='activo'?'El enlace anterior venció.':last&&last.estado==='revocado'?'El enlace anterior fue revocado.':'';h+=`${why?`<div class="hint">${why}</div>`:''}<div class="actions"><button class="primary" data-act="mkpub" data-n="${Number(n)}">${rows.length?'Generar enlace nuevo':'Generar enlace público'}</button></div>`}
  box.innerHTML=h;
 }
+const PUB_CREATE_ERR={sin_permiso:'Tu usuario no tiene permiso para generar enlaces.',servicio_no_encontrado:'Este voucher aún no está guardado en Supabase o no es tuyo. Sincroniza e inténtalo de nuevo.',servicio_ambiguo:'Hay más de un voucher con ese número; pide a soporte que lo revise.',servicio_invalido:'El voucher guardado en Supabase tiene un formato inesperado.',numero_invalido:'Número de voucher inválido.'};
 async function pubCreate(n){
  const d=stored().find(x=>Number(x.numero)===Number(n));if(!d)return;
  try{
   const rows=await pubFetch(n);
   if(rows.some(x=>x.estado==='completado')&&!confirm('Este voucher ya fue diligenciado por el cliente. Un enlace nuevo no borra esos datos, pero el cliente podría diligenciarlo otra vez. ¿Continuar?'))return;
-  const r=await carcoveSb.rpc('carcove_crear_enlace',{p_numero:Number(n),p_datos:clientVoucher(d,false),p_dias:30});
-  if(r.error)throw r.error;if(!r.data||!r.data.ok)throw new Error((r.data&&r.data.error)||'sin_respuesta');
+    if(!carcoveCoreBusy)await corePushLocal();
+  const r=await carcoveSb.rpc('carcove_crear_enlace',{p_numero:Number(n),p_datos:{},p_dias:30});
+  if(r.error)throw r.error;if(!r.data||!r.data.ok)throw new Error(PUB_CREATE_ERR[r.data&&r.data.error]||(r.data&&r.data.error)||'sin_respuesta');
  }catch(e){alert('No se pudo generar el enlace: '+(e.message||e));return}
  renderPubBox(n);
 }
