@@ -2,7 +2,20 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- PWA: manifiesto, iconos y metadatos de instalación (Android / iOS) -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#c8203a">
+<meta name="application-name" content="CARCOVE">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CARCOVE">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<script>/* PWA: Service Worker solo-red (sin caché). No se registra en la vista pública del voucher. */
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')&&!/^\/voucher(\/|$)/.test(location.pathname)){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){})})}</script>
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <title>CARCOVE | Gestión de servicios</title>
@@ -52,6 +65,9 @@ table.kv{width:100%;border-collapse:collapse;font-size:13px}table.kv th{text-ali
 @media print{.side,.top,nav,.no-print,.actions,footer{display:none!important}body{background:#fff}main{max-width:none;margin:0;padding:0}.panel{box-shadow:none;border:0;padding:8px}.modal{display:none!important}}
 .fc-t input{padding:7px 8px}details.fc>summary{cursor:pointer;font-weight:700}
 .fe-mode{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:#faf9fb;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:12px;padding:14px 16px}.fe-mode b{display:block;font-size:18px;color:var(--red2);margin:2px 0 4px}.btn-link{display:inline-flex;align-items:center;border-radius:10px;padding:10px 14px;font-weight:600;text-decoration:none}.btn-link.primary{background:var(--red);color:#fff}.btn-link.secondary{background:#f1eff3;color:#2c2a31}.pill-info{background:#e8f0fb;color:#1d4f91}.pill-na{background:#efecf1;color:#5b5962}.fe-step{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;font-weight:500;color:var(--ink)}.fe-step input{width:auto;margin-top:3px;flex:none}.fe-copy{display:inline-block;padding:5px 9px;font-size:11px;border-radius:8px;font-weight:600;cursor:pointer;margin:2px 4px 2px 0}.fe-acts{margin-top:6px}.fe-h{grid-column:1/-1;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red2);margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}code.cufe{word-break:break-all;font-size:11px}
+/* PWA · áreas seguras (notch y barra de inicio). env() vale 0 en equipos sin notch, así que no cambia nada allí. */
+html{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+@media(max-width:860px){.top{padding-top:calc(12px + env(safe-area-inset-top,0px))}.side{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));padding-left:calc(8px + env(safe-area-inset-left,0px));padding-right:calc(8px + env(safe-area-inset-right,0px))}main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}}
 </style>
 </head>
 <body>
